@@ -10,11 +10,9 @@ var MWC = mwcCore({
 });
 
 MWC.extendApp(function(core){
-  MWC.app.locals.delimiters = '[[ ]]';
+  core.app.locals.delimiters = '[[ ]]';
 });
 MWC.usePlugin(require('mwc_plugin_hogan_express'));
-
-
 
 MWC.extendMiddlewares(function(core){
   return express.static(path.join(__dirname, 'public'));
