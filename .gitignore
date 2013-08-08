@@ -7,12 +7,17 @@ lib-cov
 *.pid
 *.gz
 *~
+.tmp
+.sass-cache
 
 pids
 logs
 results
 
 node_modules
+public/bower_components
+config/config.yaml
+
 
 nbproject
 *sublime*

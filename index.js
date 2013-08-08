@@ -1,21 +1,23 @@
 var mwcCore = require('mwc_kernel'),
   express = require('express'),
-  path = require('path');
+  path = require('path'),
+  ENV = process.env.NODE_ENV || 'development',
+  config = require('yaml-config').readConfig(__dirname + '/config/config.yaml', ENV);
 
 //setting up the config
-var MWC = mwcCore({
-//'mongoUrl':"mongodb://localhost/mwcdataentry",
-  'hostUrl':'http://vvv.msk0.ru/',//'http://mwcwelcome.herokuapp.com/',//todo - change it to your site!
-  'secret': ((process.env.secret)?(process.env.secret):'lAAAAalalala1')
-});
+var MWC = mwcCore(config);
 
 MWC.extendApp(function(core){
   core.app.locals.delimiters = '[[ ]]';
 });
 MWC.usePlugin(require('mwc_plugin_hogan_express'));
 MWC.extendModel('Colleges',require('./models/colleges.js'));
-MWC.extendMiddlewares(function(core){
+MWC.extendMiddleware(function(core){
   return express.static(path.join(__dirname, 'public'));
+});
+
+MWC.extendMiddleware(function(core){
+  return express.static(path.join(__dirname, '.tmp'));
 });
 
 
@@ -39,5 +41,5 @@ MWC.extendRoutes(function (core) {
     }
   });
 });
-MWC.listen();
+MWC.start(config.port);
 
