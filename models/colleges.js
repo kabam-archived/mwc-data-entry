@@ -2,16 +2,30 @@
 
 module.exports = exports = function (mongoose, config) {
   var CollegeSchema = new mongoose.Schema({
+    'CREATOR':String, //User, who created this document
+    'APPROVED':Boolean,//if document is approved, it can be edited only by administrators of moderators
     'INSTNM': String, //Institution (entity) name
     'ADDR': String, //Street address or post office box
     'CITY': String, //City location of institution
     'STABBR': String,//State abbreviation
-    'ZIP': String,
-    'OBEREG': String, //Geographic region
+    'ZIP': String, //Postal Zip Code
+    'OBEREG': [
+      'N/A',
+      'US Service schools',
+      'New England CT ME MA NH RI VT',
+      'Mid East DE DC MD NJ NY PA',
+      'Great Lakes IL IN MI OH WI',
+      'Plains IA KS MN MO NE ND SD',
+      'Southeast AL AR FL GA KY LA MS NC SC TN VA WV',
+      'Southwest AZ NM OK TX',
+      'Rocky Mountains CO ID MT UT WY',
+      'Far West AK CA HI NV OR WA',
+      'Outlying areas AS FM GU MH MP PR PW VI'
+    ], //Geographic region
     'CHFNM': String,//Name of chief administrator
     'CHFTITLE': String,//Title of chief administrator
     'GENTELE': String,//General information telephone number
-    'EIN': String, //Cont,Employer Identification Number
+    'EIN': String, //Cont,Employer Identification Number - "The number assigned to an institution by the Internal Revenue Service for tax purposes.
     'OPEID': String, //Cont,Office of Postsecondary Education (OPE) ID Number
     'OPEFLAG': String, //OPE Title IV eligibility indicator code
     'WEBADDR': String, //Institution's internet website address
