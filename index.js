@@ -4,7 +4,7 @@ var mwcCore = require('mwc_kernel'),
 
 //setting up the config
 var MWC = mwcCore({
-//'mongoUrl':"mongodb://localhost/mwcdataentry",
+  'mongoUrl':"mongodb://localhost/mwc_dev",
   'hostUrl':'http://vvv.msk0.ru/',//'http://mwcwelcome.herokuapp.com/',//todo - change it to your site!
   'secret': ((process.env.secret)?(process.env.secret):'lAAAAalalala1')
 });
@@ -14,7 +14,7 @@ MWC.extendApp(function(core){
 });
 MWC.usePlugin(require('mwc_plugin_hogan_express'));
 MWC.extendModel('Colleges',require('./models/colleges.js'));
-MWC.extendMiddlewares(function(core){
+MWC.extendMiddleware(function(core){
   return express.static(path.join(__dirname, 'public'));
 });
 
@@ -39,5 +39,5 @@ MWC.extendRoutes(function (core) {
     }
   });
 });
-MWC.listen();
+MWC.start();
 
