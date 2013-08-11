@@ -2,78 +2,18 @@
 
 module.exports = exports = function (mongoose, config) {
   var CollegeSchema = new mongoose.Schema({
-    'CREATOR':String, //User, who created this document
-    'APPROVED':Boolean,//if document is approved, it can be edited only by administrators of moderators
+    'CREATOR': String, //User, who created this document
+    'APPROVED': Boolean,//if document is approved, it can be edited only by administrators of moderators
     'INSTNM': String, //Institution (entity) name
     'ADDR': String, //Street address or post office box
     'CITY': String, //City location of institution
     'STABBR': String,//State abbreviation
     'ZIP': String, //Postal Zip Code
     'OBEREG': { //geographical region
-        'index':Number,
-        'name':String,
-        'selected':Boolean
-      },
-//      {
-//        'index':0,
-//        'name':'US Service schools',
-//        'selected':Boolean
-//      },
-//      {
-//        'index':1,
-//        'name':'New England CT ME MA NH RI VT',
-//        'selected':Boolean
-//      },
-//      {
-//        'index':2,
-//        'name':'Mid East DE DC MD NJ NY PA',
-//        'selected':Boolean
-//      },
-//      {
-//        'index':3,
-//        'name':'Great Lakes IL IN MI OH WI',
-//        'selected':Boolean
-//      },
-//      {
-//        'index':4,
-//        'name':'Plains IA KS MN MO NE ND SD',
-//        'selected':Boolean
-//      },
-//      {
-//        'index':5,
-//        'name':'Southeast AL AR FL GA KY LA MS NC SC TN VA WV',
-//        'selected':Boolean
-//      },
-//      {
-//        'index':6,
-//        'name':'Southwest AZ NM OK TX',
-//        'selected':Boolean
-//      },
-//      {
-//        'index':7,
-//        'name':'Plains IA KS MN MO NE ND SD',
-//        'selected':Boolean
-//      },
-//      {
-//        'index':8,
-//        'name':'Rocky Mountains CO ID MT UT WY',
-//        'selected':Boolean
-//      },
-//      {
-//        'index':9,
-//        'name':'Far West AK CA HI NV OR WA',
-//        'selected':Boolean
-//      },
-//      {
-//        'index':10,
-//        'name':'Outlying areas AS FM GU MH MP PR PW VI',
-//        'selected':Boolean
-//      },
-//      {
-//        'index':-3,
-//        'name':'N/A',
-//        'selected':Boolean
-//      }
+      'index': Number,
+      'name': String,
+      'selected': Boolean
+    },
     'CHFNM': String,//Name of chief administrator
     'CHFTITLE': String,//Title of chief administrator
     'GENTELE': String,//General information telephone number
@@ -89,8 +29,8 @@ module.exports = exports = function (mongoose, config) {
     'ICLEVEL': String, //Level of institution
     'CONTROL': String, //Control of institution
     'HLOFFER': {
-      'index':Number,
-      'value':String
+      'index': Number,
+      'value': String
     }, //Highest level of offering
     'UGOFFER': String, //Undergraduate offering
     'GROFFER': String, //Graduate offering
@@ -135,8 +75,62 @@ module.exports = exports = function (mongoose, config) {
     INSTNM: 1,
     CITY: 1,
     ZIP: 1,
-    WEBADDR:1
+    WEBADDR: 1
   });
+
+  CollegeSchema.statics.getGeographicalLocations = function () {
+    return [
+      {
+        'index': 0,
+        'name': 'US Service schools'
+      },
+      {
+        'index': 1,
+        'name': 'New England CT ME MA NH RI VT'
+      },
+      {
+        'index': 2,
+        'name': 'Mid East DE DC MD NJ NY PA'
+      },
+      {
+        'index': 3,
+        'name': 'Great Lakes IL IN MI OH WI'
+      },
+      {
+        'index': 4,
+        'name': 'Plains IA KS MN MO NE ND SD'
+      },
+      {
+        'index': 5,
+        'name': 'Southeast AL AR FL GA KY LA MS NC SC TN VA WV'
+      },
+      {
+        'index': 6,
+        'name': 'Southwest AZ NM OK TX'
+      },
+      {
+        'index': 7,
+        'name': 'Plains IA KS MN MO NE ND SD'
+      },
+      {
+        'index': 8,
+        'name': 'Rocky Mountains CO ID MT UT WY'
+      },
+      {
+        'index': 9,
+        'name': 'Far West AK CA HI NV OR WA'
+      },
+      {
+        'index': 10,
+        'name': 'Outlying areas AS FM GU MH MP PR PW VI'
+      },
+      {
+        'index': -3,
+        'name': 'N/A'
+      }
+    ];
+  };
+
 
   return mongoose.model('colleges', CollegeSchema);
 };
