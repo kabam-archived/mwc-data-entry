@@ -9,19 +9,71 @@ module.exports = exports = function (mongoose, config) {
     'CITY': String, //City location of institution
     'STABBR': String,//State abbreviation
     'ZIP': String, //Postal Zip Code
-    'OBEREG': [
-      'N/A',
-      'US Service schools',
-      'New England CT ME MA NH RI VT',
-      'Mid East DE DC MD NJ NY PA',
-      'Great Lakes IL IN MI OH WI',
-      'Plains IA KS MN MO NE ND SD',
-      'Southeast AL AR FL GA KY LA MS NC SC TN VA WV',
-      'Southwest AZ NM OK TX',
-      'Rocky Mountains CO ID MT UT WY',
-      'Far West AK CA HI NV OR WA',
-      'Outlying areas AS FM GU MH MP PR PW VI'
-    ], //Geographic region
+    'OBEREG': { //geographical region
+        'index':Number,
+        'name':String,
+        'selected':Boolean
+      },
+//      {
+//        'index':0,
+//        'name':'US Service schools',
+//        'selected':Boolean
+//      },
+//      {
+//        'index':1,
+//        'name':'New England CT ME MA NH RI VT',
+//        'selected':Boolean
+//      },
+//      {
+//        'index':2,
+//        'name':'Mid East DE DC MD NJ NY PA',
+//        'selected':Boolean
+//      },
+//      {
+//        'index':3,
+//        'name':'Great Lakes IL IN MI OH WI',
+//        'selected':Boolean
+//      },
+//      {
+//        'index':4,
+//        'name':'Plains IA KS MN MO NE ND SD',
+//        'selected':Boolean
+//      },
+//      {
+//        'index':5,
+//        'name':'Southeast AL AR FL GA KY LA MS NC SC TN VA WV',
+//        'selected':Boolean
+//      },
+//      {
+//        'index':6,
+//        'name':'Southwest AZ NM OK TX',
+//        'selected':Boolean
+//      },
+//      {
+//        'index':7,
+//        'name':'Plains IA KS MN MO NE ND SD',
+//        'selected':Boolean
+//      },
+//      {
+//        'index':8,
+//        'name':'Rocky Mountains CO ID MT UT WY',
+//        'selected':Boolean
+//      },
+//      {
+//        'index':9,
+//        'name':'Far West AK CA HI NV OR WA',
+//        'selected':Boolean
+//      },
+//      {
+//        'index':10,
+//        'name':'Outlying areas AS FM GU MH MP PR PW VI',
+//        'selected':Boolean
+//      },
+//      {
+//        'index':-3,
+//        'name':'N/A',
+//        'selected':Boolean
+//      }
     'CHFNM': String,//Name of chief administrator
     'CHFTITLE': String,//Title of chief administrator
     'GENTELE': String,//General information telephone number
@@ -36,7 +88,10 @@ module.exports = exports = function (mongoose, config) {
     'SECTOR': String, //Sector of institution
     'ICLEVEL': String, //Level of institution
     'CONTROL': String, //Control of institution
-    'HLOFFER': String, //Highest level of offering
+    'HLOFFER': {
+      'index':Number,
+      'value':String
+    }, //Highest level of offering
     'UGOFFER': String, //Undergraduate offering
     'GROFFER': String, //Graduate offering
     'HDEGOFR1': String, //Highest degree offered
