@@ -29,7 +29,7 @@ module.exports = exports = function (mongoose, config) {
     'ICLEVEL': String, //Level of institution
     'CONTROL': String, //Control of institution
     'HLOFFER': {
-      'index': Number,
+      'index': String,
       'value': String
     }, //Highest level of offering
     'UGOFFER': String, //Undergraduate offering
@@ -130,7 +130,63 @@ module.exports = exports = function (mongoose, config) {
       }
     ];
   };
+  CollegeSchema.statics.getHighestLevelOfferings = function(){
+    return [
+      {
+        'index':0,
+        'value':'Other'
+      },
+      {
+        'index':1,
+        'value':'Postsecondary award, certificate or diploma of less than one academic year'
+      },
+      {
+        'index':2,
+        'value':'Postsecondary award, certificate or diploma of at least one but less than two academic years'
+      },
+      {
+        'index':3,
+        'value':'Associate\'s degree'
+      },
+      {
+        'index':4,
+        'value':'Postsecondary award, certificate or diploma of at least two but less than four academic years'
+      },
+      {
+        'index':5,
+        'value':'Bachelor\'s degree'
+      },
+      {
+        'index':6,
+        'value':'Postbaccalaureate certificate'
+      },
+      {
+        'index':7,
+        'value':'Master\'s degree'
+      },
+      {
+        'index':8,
+        'value':'Post-master\'s certificate'
+      },
+      {
+        'index':9,
+        'value':'Doctor\'s degree'
+      },
+      {
+        'index':'b',
+        'value':'None of the above or no answer'
+      },
+      {
+        'index':-2,
+        'value':'Not applicable, first-professional only'
+      },
+      {
+        'index':-3,
+        'value':'Not Available'
+      },
 
+    ];
+  };
 
   return mongoose.model('colleges', CollegeSchema);
 };
