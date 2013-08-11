@@ -187,55 +187,54 @@ module.exports = exports = function (mongoose, config) {
 
     ];
   };
-
-  CollegeSchema.statics.getLocal = function(){
+  CollegeSchema.statics.getLocal = function () {
     return [
       {
-      'index':11,
-      'value': 'City: Large: Territory inside an urbanized area and inside a principal city with population of 250,000 or more.'
+        'index': 11,
+        'value': 'City: Large: Territory inside an urbanized area and inside a principal city with population of 250,000 or more.'
       },
       {
-        'index':12,
+        'index': 12,
         'value': 'City: Midsize: Territory inside an urbanized area and inside a principal city with population less than 250,000 and greater than or equal to 100,000.'
       },
       {
-        'index':13,
+        'index': 13,
         'value': 'Territory inside an urbanized area and inside a principal city with population less than 100,000.'
       },
       {
-        'index':21,
+        'index': 21,
         'value': 'Suburb: Large: Territory outside a principal city and inside an urbanized area with population of 250,000 or more..'
       },
       {
-        'index':22,
+        'index': 22,
         'value': 'Suburb: Midsize: Territory outside a principal city and inside an urbanized area with population less than 250,000 and greater than or equal to 100,000.'
       },
       {
-        'index':23,
+        'index': 23,
         'value': 'Suburb: Small: Territory outside a principal city and inside an urbanized area with population less than 100,000.'
       },
       {
-        'index':31,
+        'index': 31,
         'value': 'Town: Fringe: Territory inside an urban cluster that is less than or equal to 10 miles from an urbanized area.'
       },
       {
-        'index':32,
+        'index': 32,
         'value': 'Town: Distant: Territory inside an urban cluster that is more than 10 miles and less than or equal to 35 miles from an urbanized area.'
       },
       {
-        'index':33,
+        'index': 33,
         'value': 'Town: Remote: Territory inside an urban cluster that is more than 35 miles of an urbanized area.'
       },
       {
-        'index':41,
+        'index': 41,
         'value': 'Rural: Fringe: Census-defined rural territory that is less than or equal to 5 miles from an urbanized area, as well as rural territory that is less than or equal to 2.5 miles from an urban cluster.'
       },
       {
-        'index':42,
+        'index': 42,
         'value': 'Rural: Distant: Census-defined rural territory that is more than 5 miles but less than or equal to 25 miles from an urbanized area, as well as rural territory that is more than 2.5 miles but less than or equal to 10 miles from an urban cluster.'
       },
       {
-        'index':43,
+        'index': 43,
         'value': 'Rural: Remote: Census-defined rural territory that is more than 25 miles from an urbanized area and is also more than 10 miles from an urban cluster.'
       }
     ];
