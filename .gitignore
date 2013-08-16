@@ -9,6 +9,7 @@ lib-cov
 *~
 .tmp
 .sass-cache
+.DS_Store
 
 pids
 logs
@@ -17,6 +18,7 @@ results
 node_modules
 public/bower_components
 config/config.yaml
+dist
 
 
 nbproject
