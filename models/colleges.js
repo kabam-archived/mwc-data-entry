@@ -2,8 +2,9 @@
 
 module.exports = exports = function (mongoose, config) {
   var CollegeSchema = new mongoose.Schema({
-    'CREATOR': String, //User, who created this document
-    'APPROVED': Boolean,//if document is approved, it can be edited only by administrators of moderators
+    'creatorId': mongoose.Schema.Types.ObjectId, // id of User, who created this document
+    'creatorUsername': String, // login of User, who created this document
+    'isApproved': Boolean,//if document is approved, it can be edited only by administrators of moderators
     'INSTNM': String, //Institution (entity) name
     'ADDR': String, //Street address or post office box
     'CITY': String, //City location of institution
@@ -183,8 +184,7 @@ module.exports = exports = function (mongoose, config) {
       {
         'index': -3,
         'value': 'Not Available'
-      },
-
+      }
     ];
   };
   CollegeSchema.statics.getLocal = function () {
@@ -239,6 +239,53 @@ module.exports = exports = function (mongoose, config) {
       }
     ];
   };
-  return mongoose.model('colleges', CollegeSchema);
+
+
+  //acl
+
+  //everyone can create new entries
+  CollegeSchema.statics.canCreate = function (user) {
+    return (user) ? true : false;
+  };
+
+  //user can read his entries
+  //moderator can read all entries
+  CollegeSchema.methods.canRead = function (user) {
+    if (user.hasRole('supervisor')) {
+      return true;
+    } else {
+      return (user._id === this.creatorId);
+    }
+  };
+
+  //user can edit entry, if it is not approved
+  //moderator can edit every entry
+  CollegeSchema.methods.canWrite = function (user) {
+    if (user.hasRole('supervisor')) {
+      return true;
+    } else {
+      return (user._id === this.creatorId && !this.isApproved);
+    }
+  };
+
+  //ordinary user fetch only his entries, moderator - fetch all entries!
+  CollegeSchema.statics.getForUser = function (user, parameters, callback) {
+    if(!parameters){
+      parameters={};
+    }
+    if (user && user._id) {
+      if (user.hasRole('supervisor')) {
+        parameters.creatorId = user._id;
+        this.find(parameters,callback);
+      } else {
+        parameters.creatorId = user._id;
+        this.find(parameters,callback);
+      }
+    } else {
+      callback(null);
+    }
+  };
+
+  return mongoose.model('Colleges', CollegeSchema);
 };
 

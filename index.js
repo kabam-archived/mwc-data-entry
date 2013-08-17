@@ -13,6 +13,7 @@ MWC.extendApp(function(core){
   core.app.locals.delimiters = '[[ ]]';
 });
 MWC.usePlugin(require('mwc_plugin_hogan_express'));
+MWC.usePlugin(require('mwc_plugin_rest'));
 MWC.extendModel('Colleges',require('./models/colleges.js'));
 MWC.extendMiddleware(function(core){
   return express.static(path.join(__dirname, 'public'));
@@ -26,16 +27,6 @@ MWC.extendRoutes(function (core) {
     } else {
       response.status(403);
       response.render('auth');
-    }
-  });
-
-  core.app.get('/api/colleges',function(request,response){
-    if(request.user){
-      request.model.Colleges.find({},function(err,colleges){
-        response.json(colleges);
-      });
-    } else {
-      response.send(401);
     }
   });
 });
