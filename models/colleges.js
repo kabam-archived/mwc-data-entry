@@ -243,32 +243,32 @@ module.exports = exports = function (mongoose, config) {
 
   //acl
 
-  //everyone can create new entries
+  //every worker can create new entries
   CollegeSchema.statics.canCreate = function (user) {
-    return (user) ? true : false;
+    return (user && user.hasRole('worker')) ? true : false;
   };
 
-  //user can read his entries
-  //moderator can read all entries
+  //worker can read his entries
+  //supervisor can read all entries
   CollegeSchema.methods.canRead = function (user) {
     if (user.hasRole('supervisor')) {
       return true;
     } else {
-      return (user._id === this.creatorId);
+      return (user._id === this.creatorId  && user.hasRole('worker'));
     }
   };
 
-  //user can edit entry, if it is not approved
-  //moderator can edit every entry
+  //worker can edit entry, if it is not approved
+  //supervisor can edit every entry
   CollegeSchema.methods.canWrite = function (user) {
     if (user.hasRole('supervisor')) {
       return true;
     } else {
-      return (user._id === this.creatorId && !this.isApproved);
+      return (user._id === this.creatorId  && user.hasRole('worker') && !this.isApproved);
     }
   };
 
-  //ordinary user fetch only his entries, moderator - fetch all entries!
+  //worker fetch only his entries, supervisor - fetch all entries!
   CollegeSchema.statics.getForUser = function (user, parameters, callback) {
     if(!parameters){
       parameters={};
@@ -278,14 +278,19 @@ module.exports = exports = function (mongoose, config) {
         parameters.creatorId = user._id;
         this.find(parameters,callback);
       } else {
-        parameters.creatorId = user._id;
-        this.find(parameters,callback);
+        if(user.hasRole('worker')){
+          parameters.creatorId = user._id;
+          this.find(parameters,callback);
+        } else {
+          callback(null,[]);
+        }
       }
     } else {
-      callback(null);
+      callback(null,[]);
     }
   };
 
+  //user without permission can do nothing!
+
   return mongoose.model('Colleges', CollegeSchema);
 };
-

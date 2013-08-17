@@ -4,31 +4,61 @@ var mwcCore = require('mwc_kernel'),
 
 //setting up the config
 var MWC = mwcCore({
-  'mongoUrl':"mongodb://localhost/mwc_dev",
-  'hostUrl':'http://vvv.msk0.ru/',//'http://mwcwelcome.herokuapp.com/',//todo - change it to your site!
-  'secret': ((process.env.secret)?(process.env.secret):'lAAAAalalala1')
+  'mongoUrl': "mongodb://localhost/mwc_dev",
+  'hostUrl': 'http://vvv.msk0.ru/',//'http://mwcwelcome.herokuapp.com/',//todo - change it to your site!
+  'secret': ((process.env.secret) ? (process.env.secret) : 'lAAAAalalala1')
 });
 
-MWC.extendApp(function(core){
+MWC.extendApp(function (core) {
   core.app.locals.delimiters = '[[ ]]';
 });
 MWC.usePlugin(require('mwc_plugin_hogan_express'));
+
+var protectorMiddlewareFunction = function (mwc) {
+  return function (request, response, next) {
+    if (request.user) {
+      if (request.user.hasRole('worker') || request.user.hasRole('supervisor')) {
+        next();
+      } else {
+        //this user is NOT INVITED!!!
+        response.send(403, 'Sorry, you can\'t work, you need permission from supervisor!');
+        return;
+      }
+    } else {
+      next();
+    }
+  };
+}
+
+MWC.extendMiddleware(['development', 'staging', 'production'], '/api', protectorMiddlewareFunction);
+MWC.extendMiddleware(['development', 'staging', 'production'], '/data-entry', protectorMiddlewareFunction);
+
 MWC.usePlugin(require('mwc_plugin_rest'));
-MWC.extendModel('Colleges',require('./models/colleges.js'));
-MWC.extendMiddleware(function(core){
+MWC.extendModel('Colleges', require('./models/colleges.js'));
+MWC.extendMiddleware(function (mwc) {
   return express.static(path.join(__dirname, 'public'));
 });
 
 
 MWC.extendRoutes(function (core) {
+
   core.app.get('/', function (request, response) {
-    if(request.user){
+    if (request.user) {
       response.render('logined');
     } else {
       response.status(403);
-      response.render('auth');
+      response.render('auth', {'title': "MWC-Data-Entry"});
+    }
+  });
+
+  core.app.get('/data-entry', function (request, response) {
+    if (request.user) {
+      response.send('It will be a single page application seed page for data entry');
+    } else {
+      response.redirect('/');
     }
   });
 });
+
 MWC.start();
 
