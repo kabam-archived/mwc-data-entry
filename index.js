@@ -1,6 +1,7 @@
-var MWCKernel = require('mwc_kernel'),
+var MWCKernel = require('kabam-kernel'),
   express = require('express'),
   path = require('path'),
+  url = require('url'),
   ENV = process.env.NODE_ENV || 'development',
   config = require('yaml-config').readConfig(__dirname + '/config/config.yaml', ENV);
 
@@ -13,23 +14,38 @@ mwc.extendApp(function(core){
   core.app.locals.delimiters = '[[ ]]';
 });
 
-mwc.middleware(function(core){
-  return express.static(path.join(__dirname, 'public'));
-});
 
-mwc.middleware(function(core){
-  return express.static(path.join(__dirname, '.tmp'));
-});
+//TODO: this should be defined in a grunt task when we will integrate mwc with grunt
+if(ENV === 'development'){
+  mwc.extendMiddleware(function(core){
+    return express.static(path.join(__dirname, 'public'));
+  });
+  mwc.extendMiddleware(function(core){
+    return express.static(path.join(__dirname, '.tmp'));
+  });
+}
 
+if(ENV === 'production'){
+  mwc.extendMiddleware(function(core){
+    return express.static(path.join(__dirname, 'dist/public'));
+  });
+}
 
-mwc.routes(function (core) {
-  core.app.get('/', function (request, response) {
-    if(request.user){
-      response.render('logined');
-    } else {
-      response.status(403);
-      response.render('auth');
+//TODO: should be in core?
+mwc.extendMiddleware(function(core){
+  return function(req, res, next) {
+    // only return XSRF-TOKEN for index page
+    if(url.parse(req.url).pathname === '/') {
+      res.cookie('XSRF-TOKEN', req.session._csrf);
     }
+    next();
+  }
+});
+
+
+mwc.extendRoutes(function (core) {
+  core.app.get('/', function (request, response) {
+    response.render('index');
   });
 
   core.app.get('/api/colleges',function(request,response){
