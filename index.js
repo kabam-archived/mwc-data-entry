@@ -37,6 +37,33 @@ MWC.usePlugin(require('mwc_plugin_rest'));
 MWC.extendModel('Colleges', require('./models/colleges.js'));
 MWC.extendMiddleware(function (mwc) {
   return express.static(path.join(__dirname, 'public'));
+
+
+//TODO: this should be defined in a grunt task when we will integrate mwc with grunt
+if(ENV === 'development'){
+  mwc.extendMiddleware(function(core){
+    return express.static(path.join(__dirname, 'public'));
+  });
+  mwc.extendMiddleware(function(core){
+    return express.static(path.join(__dirname, '.tmp'));
+  });
+}
+
+if(ENV === 'production'){
+  mwc.extendMiddleware(function(core){
+    return express.static(path.join(__dirname, 'dist/public'));
+  });
+}
+
+//TODO: should be in core?
+mwc.extendMiddleware(function(core){
+  return function(req, res, next) {
+    // only return XSRF-TOKEN for index page
+    if(url.parse(req.url).pathname === '/') {
+      res.cookie('XSRF-TOKEN', req.session._csrf);
+    }
+    next();
+  }
 });
 
 
@@ -55,7 +82,7 @@ MWC.extendRoutes(function (core) {
     if (request.user) {
       response.send('It will be a single page application seed page for data entry');
     } else {
-      response.redirect('/');
+      response.send(401);
     }
   });
 });
