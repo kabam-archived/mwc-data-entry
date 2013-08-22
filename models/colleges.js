@@ -1,8 +1,8 @@
 //mongoose model
 
-module.exports = exports = function (mongoose, config) {
-  var CollegeSchema = new mongoose.Schema({
-    'creatorId': mongoose.Schema.Types.ObjectId, // id of User, who created this document
+module.exports = exports = function (kabam) {
+  var CollegeSchema = new kabam.mongoose.Schema({
+    'creatorId': kabam.mongoose.Schema.Types.ObjectId, // id of User, who created this document
     'creatorUsername': String, // login of User, who created this document
     'isApproved': Boolean,//if document is approved, it can be edited only by administrators of moderators
     'INSTNM': String, //Institution (entity) name
@@ -292,5 +292,5 @@ module.exports = exports = function (mongoose, config) {
 
   //user without permission can do nothing!
 
-  return mongoose.model('Colleges', CollegeSchema);
+  return kabam.mongoConnection.model('Colleges', CollegeSchema);
 };
