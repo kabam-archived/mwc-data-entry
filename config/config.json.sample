@@ -1,0 +1,8 @@
+{
+  "development": {
+    "port": 3080,
+    "mongoUrl": "mongodb://localhost/mwc_data_entry_dev",
+    "hostUrl": "http://localhost:3080/",
+    "secret": "gsgrgarglnaejhrghjkareghjaehjkrgakjh"
+  }
+}
