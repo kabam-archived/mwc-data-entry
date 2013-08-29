@@ -51,15 +51,11 @@ MWC.extendMiddleware('production', function (core) {
 
 
 MWC.extendRoutes(function (core) {
-  core.app.get('/*', function (request, response, next) {
-    //TODO: any methods on a user to get a frontend-friendly profile?
+  core.app.get('/d/*', function (request, response, next) {
     var user = {};
     if(request.user){
-      user = {
-        'username':request.user.username,
-        'email':request.user.email
-      }
-    }
+      user = request.user.export();
+    } 
     response.render('index', {
       user: JSON.stringify(user).replace('</', '<\/')
     });
